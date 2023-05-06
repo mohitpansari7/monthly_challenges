@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 monthly_challenge = {
     "january" : "“I dont believe in taking right decisions. I take decisions and then make them right.”-Ratan Tata",
@@ -43,10 +44,15 @@ def monthly_challenge_by_int(request, month):
 
 def monthly_challenges_by_str(request, month):
     print('printing request',request, month)
-    try :  
+    try :
         challenge_text = monthly_challenge[month]
-        response_data = f"<h2>{challenge_text}</h2>"
-        return HttpResponse(response_data)
+        return render(request, 'challenges/challenge.html', {
+            "month_name":month,
+            "challenge_text":challenge_text
+        })
+        #response_data = render_to_string('challenges/challenge.html')
+        #response_data = f"<h2>{challenge_text}</h2>"
+        #return HttpResponse(response_data)
     except:
         return HttpResponseNotFound("This is invalid request")
 

@@ -1,0 +1,5 @@
+{
+  "editor.foldingMaximumRegions": 50000,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  
+}
