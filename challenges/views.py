@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -15,7 +15,8 @@ monthly_challenge = {
     "september" : "The future belongs to those who believe in the beauty of their dreams. -Eleanor Roosevelt",
     "october" : "Many of life's failures are people who did not realize how close they were to success when they gave up. -Thomas A. Edison",
     "november" : "You will face many defeats in life, but never let yourself be defeated. -Maya Angelou",
-    "december" : "The purpose of our lives is to be happy. -Dalai Lama",
+    #"december" : "The purpose of our lives is to be happy. -Dalai Lama",
+    "december" : None
 }
 # Create your views here.
 
@@ -26,11 +27,14 @@ def index(request):
     list_items = ""
     months = list(monthly_challenge.keys())
 
-    for month in months:
-        cap_month = month.capitalize()
-        list_items += f"<li><a href=\"{month}\">{cap_month}</a></li>"
+    return render(request, 'challenges/index.html', {
+        "months_names" : months 
+    })
+    # for month in months:
+    #     cap_month = month.capitalize()
+    #     list_items += f"<li><a href=\"{month}\">{cap_month}</a></li>"
 
-    return HttpResponse(f"<ul>{list_items}</ul>")
+    # return HttpResponse(f"<ul>{list_items}</ul>")
 
 def monthly_challenge_by_int(request, month):
     months = list(monthly_challenge.keys())
@@ -54,7 +58,8 @@ def monthly_challenges_by_str(request, month):
         #response_data = f"<h2>{challenge_text}</h2>"
         #return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound("This is invalid request")
+        raise Http404()
+        #return HttpResponseNotFound("This is invalid request")
 
     
     
